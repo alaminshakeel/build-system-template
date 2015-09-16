@@ -59,10 +59,6 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            options: {
-                liverelaod: true,
-            },
-
             files: ['src/css//*.css', 'src/less//*.less'],
             tasks: ['less', 'cssmin'],
 
@@ -74,14 +70,8 @@ module.exports = function(grunt) {
     });
 
     // Load the plugins
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-
-    grunt.loadNpmTasks('grunt-autoprefixer');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-
-    grunt.loadNpmTasks('grunt-contrib-watch');
+    require('load-grunt-tasks')(grunt);
 
     //Default Task(s)
-    grunt.registerTask('default', ['uglify', 'less', 'cssmin']);
+    grunt.registerTask('default', 'watch');
 };
