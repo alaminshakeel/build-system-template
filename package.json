@@ -1,8 +1,12 @@
 {
 	"name": "build-system-template",
+	"description": "",
 	"version": "0.1.0",
 
-	"author": "Jobayer Arman",
+	"author": {
+		"name":	"Jobayer Arman",
+		"email": "carbonjha@gmail.com"
+		},
 	"license": "MIT",
 
 	"devDependencies": {
