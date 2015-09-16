@@ -1,0 +1,25 @@
+{
+	"name": "Freelancer-portfolio",
+	"version": "0.1.0",
+	"description": "Flat One Page Portfolio Website",
+
+	"author": "Jobayer Arman",
+	"license": "MIT",
+
+	"devDependencies": {
+		"grunt": "~0.4.4",
+
+		"jshint-stylish": "latest",
+		"grunt-contrib-jshint": "latest",
+
+		"grunt-autoprefixer": "latest",
+
+		"grunt-contrib-uglify": "latest",
+		"grunt-contrib-concat": "latest",
+
+		"grunt-contrib-less": "latest",
+		"grunt-contrib-cssmin": "latest",
+
+		"grunt-contrib-watch": "latest"
+	}
+}
