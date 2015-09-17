@@ -1,12 +1,12 @@
 module.exports = function(grunt) {
 
-    // constants for various paths and files to be used by the tast configuration
+    // constants for various paths and files to be used by the task configuration
     var BUILD_DIR      = 'dist/';
 
-    var BUILD_DIR_JS   = BUILD_DIR     + 'assets/js/';
-    var BUILD_FILE_JS  = BUILD_DIR_JS  + 'script.min.js';
+    var BUILD_DIR_JS   = BUILD_DIR     + 'js/';
+    var BUILD_FILE_JS  = BUILD_DIR_JS  + 'script.js';
 
-    var BUILD_DIR_CSS  = BUILD_DIR     + 'assets/css/';
+    var BUILD_DIR_CSS  = BUILD_DIR     + 'css/';
     var BUILD_FILE_CSS = BUILD_DIR_CSS + 'style.min.css';
 
 
@@ -34,10 +34,44 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        cssflow: {
+            options: {
+                preprocessor: 'less',
+                autoprefixer: [AP_BROWSERS]
+            },
+            build: {
+                files: {
+                    'src/css/style.css': 'src/less/style.less'
+                }
+            }
+        },
+
+        copy: {
+            build: {
+                cwd: SRC_DIR_CSS,
+                src: ['*.min.css'],
+                dest: BUILD_DIR_CSS,
+                expand: true
+            }
+        },
+
         less: {
             build: {
                 files: {
                     'src/css/style.css': SRC_FILES_LESS
+                }
+            }
+        },
+
+        autoprefixer: {
+            options: {
+                browsers: [AP_BROWSERS]
+            },
+            build: {
+                files: {
+                    expand: true,
+                    src: 'src/css/style.css',
+                    dest: 'src/css/style.css'
                 }
             }
         },
@@ -50,21 +84,46 @@ module.exports = function(grunt) {
             }
         },
 
+        jshint: {
+            options: {
+                curly: true
+            },
+            beforeconcat: [SRC_FILES_JS],
+            afterconcat: ['dist/js/script.js']
+        },
+
+        concat: {
+            options: {
+                seperator: ";"
+            },
+            build: {
+                src: ['src/js/*.js'],
+                dest: 'dist/js/script.js'
+            }
+        },
+
         uglify: {
             build: {
                 files: {
-                    "dist/js/script.min.js": SRC_FILES_JS
+                    "dist/js/script.min.js": 'dist/js/script.js'
                 }
             }
         },
 
         watch: {
-            files: ['src/css//*.css', 'src/less//*.less'],
-            tasks: ['less', 'cssmin'],
-
-            script: {
+            styles: {
+                options: {
+                    spawn: false
+                },
+                files: ['src/less//*.less'],
+                tasks: ['cssflow', 'copy'],
+            },
+            scripts: {
+                options: {
+                    spawn: false
+                },
                 files: ['src/js//*.js'],
-                tasks: 'uglify'
+                tasks: ['concat', 'uglify', 'jshint']
             }
         }
     });
