@@ -41,7 +41,7 @@ module.exports = function(grunt) {
             },
             build: {
                 files: {
-                    'src/css/style.css': 'src/less/style.less'
+                    'src/css/style.css': 'src/less/*.less'
                 }
             }
         },
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
         copy: {
             build: {
                 cwd: SRC_DIR_CSS,
-                src: ['*.min.css'],
+                src: ['*min.css'],
                 dest: BUILD_DIR_CSS,
                 expand: true
             }
@@ -63,23 +63,38 @@ module.exports = function(grunt) {
             }
         },
 
-        autoprefixer: {
-            options: {
-                browsers: [AP_BROWSERS]
-            },
+        uncss: {
             build: {
+                files: [
+                    { src: 'index.html', dest: 'dist/css/style.uncss.css' }
+                ],
+                options: {
+                    ignoreSheets: [/fonts.googleapis/]
+                }
+            }
+        },
+
+        autoprefixer: {
+            build: {
+                browsers: [AP_BROWSERS],
                 files: {
-                    expand: true,
-                    src: 'src/css/style.css',
-                    dest: 'src/css/style.css'
+                    'src/css/style.css': 'src/css/style.css'
                 }
             }
         },
 
         cssmin: {
+            options: {
+                keepSpecialComments: 0
+            },
             build: {
                 files: {
-                    'dist/css/style.min.css': SRC_FILES_CSS
+                    'dist/css/style.min.css': 'src/css/style.css'
+                }
+            },
+            dist: {
+                files: {
+                    'dist/css/style.uncss.css': 'dist/css/style.uncss.css'
                 }
             }
         },
@@ -133,4 +148,5 @@ module.exports = function(grunt) {
 
     //Default Task(s)
     grunt.registerTask('default', 'watch');
+    grunt.registerTask('cleancss', ['uncss', 'cssmin:dist']);
 };

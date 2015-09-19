@@ -19,6 +19,7 @@
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-cssflow": "^0.1.5",
+    "grunt-uncss": "^0.4.3",
     "jshint-stylish": "latest",
     "load-grunt-tasks": "^3.2.0"
   }
