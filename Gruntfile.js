@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         'Android >= 4',
         'Chrome >= 20',
         'Firefox >= 24',
-        'Explorer >= 8',
+        'Explorer >= 7',
         'iOS >= 6',
         'Opera >= 12',
         'Safari >= 6'
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
             },
             build: {
                 files: {
-                    'src/css/style.css': 'src/less/*.less'
+                    'src/css/style.css': 'src/less/main.less'
                 }
             }
         },
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
         copy: {
             build: {
                 cwd: SRC_DIR_CSS,
-                src: ['*min.css'],
+                src: ['*.css'],
                 dest: BUILD_DIR_CSS,
                 expand: true
             }
@@ -130,7 +130,7 @@ module.exports = function(grunt) {
                 options: {
                     spawn: false
                 },
-                files: ['src/less//*.less'],
+                files: ['src/less/*.less', 'src/less/**/*.less'],
                 tasks: ['cssflow', 'copy'],
             },
             scripts: {
