@@ -21,14 +21,13 @@ module.exports = function(grunt) {
     var SRC_FILES_LESS = SRC_DIR_LESS + '*.less';
 
     var AP_BROWSERS = [
-        'Android 2.3',
         'Android >= 4',
-        'Chrome >= 20',
-        'Firefox >= 24',
+        'Chrome >= 35',
+        'Firefox >= 35',
         'Explorer >= 7',
         'iOS >= 6',
-        'Opera >= 12',
-        'Safari >= 6'
+        'Opera >= 20',
+        'Safari >= 9'
     ];
 
     grunt.initConfig({
@@ -37,7 +36,7 @@ module.exports = function(grunt) {
         cssflow: {
             options: {
                 preprocessor: 'less',
-                autoprefixer: [AP_BROWSERS]
+                autoprefixer: AP_BROWSERS
             },
             build: {
                 files: {
