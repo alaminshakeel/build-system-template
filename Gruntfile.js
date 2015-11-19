@@ -73,15 +73,6 @@ module.exports = function(grunt) {
             }
         },
 
-        autoprefixer: {
-            build: {
-                browsers: [AP_BROWSERS],
-                files: {
-                    'src/css/style.css': 'src/css/style.css'
-                }
-            }
-        },
-
         cssmin: {
             options: {
                 keepSpecialComments: 0
