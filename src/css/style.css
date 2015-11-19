@@ -1040,6 +1040,11 @@ input[type="button"]:focus {
 img {
   vertical-align: middle;
 }
+.img-responsive {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .img-rounded {
   border-radius: 6px;
 }
