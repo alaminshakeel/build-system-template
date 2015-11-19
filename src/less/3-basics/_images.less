@@ -19,7 +19,11 @@ img {
 
 // Image thumbnails
 .img-thumbnail {
-	border: 4px solid white;
+	padding: @thumbnail-padding;
+	line-height: @line-height-base;
+	background-color: @thumbnail-bg;
+	border: 1px solid @thumbnail-border;
+	border-radius: @thumbnail-border-radius;
 
 	// Keep them at most 100% wide
 	.img-responsive(inline-block);
