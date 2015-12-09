@@ -1,27 +1,28 @@
 module.exports = function(grunt) {
 
 	// constants for various paths and files to be used by the task configuration
-	var BUILD_DIR      = 'dist/';
 
-	var BUILD_DIR_JS   = BUILD_DIR     + 'js/';
-	var BUILD_FILE_JS  = BUILD_DIR_JS  + 'script.js';
-	var BUILD_FILES_JS  = BUILD_DIR_JS  + '*.js';
-
-	var BUILD_DIR_CSS  = BUILD_DIR     + 'css/';
-	var BUILD_FILE_CSS = BUILD_DIR_CSS + 'style.min.css';
-	var BUILD_FILES_CSS = BUILD_DIR_CSS + '*.css';
-
-
+	/* Source Directories */
+	// Source Base
 	var SRC_DIR        = 'src/';
+
+	// HTML base source
+	var SRC_DIR_HTML 			 = SRC_DIR + 'site/';
+	// Include base source
+	var SRC_DIR_INCLUDE		 = SRC_DIR_HTML + 'include';
+	// Source HTML files
+	var SRC_FILES_HTML 		 = [SRC_DIR_HTML + '*.html', SRC_DIR_HTML + 'pages/*.html', SRC_DIR_HTML + 'include/*.html'];
 
 	var SRC_DIR_JS     = SRC_DIR + 'js/';
 	var SRC_DIR_CSS    = SRC_DIR + 'css/';
 	var SRC_DIR_LESS   = SRC_DIR + 'less/';
 
+	// Source files
 	var SRC_FILES_JS   = SRC_DIR_JS   + '*.js';
 	var SRC_FILES_CSS  = SRC_DIR_CSS  + '*.css';
 	var SRC_FILES_LESS = SRC_DIR_LESS + '*.less';
 
+	// Browser prefix for Autoprefixing
 	var AP_BROWSERS = [
 		'Android >= 4',
 		'Chrome >= 35',
@@ -32,9 +33,45 @@ module.exports = function(grunt) {
 		'Safari >= 9'
 	];
 
+	/* Output Directories */
+	// Destination Base
+	var BUILD_DIR      = 'dist/';
+
+	// Stylesheet Sources
+	var BUILD_DIR_CSS  = BUILD_DIR     + 'css/';
+	var BUILD_FILE_CSS = BUILD_DIR_CSS + 'style.min.css';
+	var BUILD_FILES_CSS = BUILD_DIR_CSS + '*.css';
+
+	// JavaScripts Sources
+	var BUILD_DIR_JS   = BUILD_DIR     + 'js/';
+	var BUILD_FILE_JS  = BUILD_DIR_JS  + 'script.js';
+	var BUILD_FILES_JS  = BUILD_DIR_JS  + '*.js';
+
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
+		// clean each destination before output
+		clean: {
+			html: ['index.html', 'pages/*.html'],
+			css: [BUILD_FILES_CSS, SRC_FILES_CSS],
+			js : [BUILD_FILES_JS]
+		},
+
+		// Build the site using grunt-includes
+		includes: {
+			build: {
+				cwd: SRC_DIR_HTML,
+				src: [ '*.html', 'pages/*.html' ],
+				dest: '.',
+				options: {
+					flatten: true,
+					includePath: SRC_DIR_INCLUDE
+				}
+			}
+		},
+
+		// all in one processor of the LESS to CSS
 		cssflow: {
 			options: {
 				preprocessor: 'less',
@@ -49,11 +86,7 @@ module.exports = function(grunt) {
 			}
 		},
 
-		clean: {
-			css: [BUILD_FILES_CSS, SRC_FILES_CSS],
-			js : [BUILD_FILES_JS]
-		},
-
+		// copy CSS from source directory to dist folder
 		copy: {
 			build: {
 				cwd: SRC_DIR_CSS,
@@ -63,6 +96,7 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// only process LESS to CSS
 		less: {
 			build: {
 				files: {
@@ -82,6 +116,7 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// Minifies or compress CSS
 		cssmin: {
 			options: {
 				keepSpecialComments: 0
@@ -128,12 +163,19 @@ module.exports = function(grunt) {
 		},
 
 		watch: {
+			html: {
+				options: {
+					spawn: false
+				},
+				files: SRC_FILES_HTML,
+				tasks: ['includes']
+			},
 			styles: {
 				options: {
 					spawn: false
 				},
 				files: ['src/less/*.less', 'src/less/**/*.less'],
-				tasks: ['clean:css', 'cssflow', 'copy']
+				tasks: ['cssflow', 'copy']
 			},
 			scripts: {
 				options: {
@@ -150,5 +192,6 @@ module.exports = function(grunt) {
 
 	//Default Task(s)
 	grunt.registerTask('default', 'watch');
+	grunt.registerTask('clean', ['clean:css', 'clean:js']);
 	grunt.registerTask('cleancss', ['uncss', 'cssmin:dist']);
 };

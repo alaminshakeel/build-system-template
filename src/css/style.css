@@ -1067,6 +1067,18 @@ section h6 {
 header {
   padding: 100px 0;
 }
+nav {
+  width: 350px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px 0;
+}
+nav a {
+  color: white;
+  padding: 20px 50px;
+  background-color: #595959;
+  font-size: 20px;
+}
 footer {
   height: 80px;
   padding-top: 50px;
